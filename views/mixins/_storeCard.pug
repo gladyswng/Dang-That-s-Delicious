@@ -1,0 +1,40 @@
+mixin storeCard(store = {})
+    .store  
+        .store__hero
+            .store__actions
+
+                if user 
+                    .store__action.store__action--heart
+                        form.heart(method="POST" action=`/api/stores/${store._id}/heart`)
+                            - const heartStrings = user.hearts.map(obj => obj.toString())
+                            - const heartClass = heartStrings.includes(store._id.toString()) ? 'heart__button--hearted' : ''
+                            //- Again the _id is not a string its an object that has some methods on it
+
+                            button.heart__button(type="submit" name="heart" class=heartClass)
+                                != h.icon('heart')
+
+        
+                //- Here we dont write store.author._id cause we are not populating the author since we dont need the author, we only need the id
+                //- If a regular person browsing the site - meaning no user, there wont be id property, thats why we need to first check if theres a user
+                if user && store.author.equals(user._id)
+                    .store__action.store__action--edit
+                        a(href=`/stores/${store._id}/edit`)
+                            != h.icon('pencil')
+
+                if store.reviews
+                    .store__action.store__action--count
+                        != h.icon('review')
+                        span= store.reviews.length
+                
+
+            img(src=`/uploads/${store.photo || 'store.png'}`)
+            h2.title    
+                a(href=`/store/${store.slug}`) #{store.name}
+        .store__details
+            p= store.description.split(' ').slice(0, 25).join(' ')
+
+
+
+//- img(src=`/uploads/${store.photo || 'store.png'}`)
+//- h2.title    
+//- a(href=`/store/${store.slug}` #{store.name})

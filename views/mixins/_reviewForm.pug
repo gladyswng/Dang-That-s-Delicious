@@ -1,0 +1,13 @@
+mixin reviewForm(store)
+
+    form.reviewer(action=`/reviews/${store._id}` method="POST")
+        textarea(name="text" placeholder="Did you try this place? Have something to say? Leave a review")
+
+        .review__meta
+            .reviewer__stars
+                each num in [5,4,3,2,1]
+                    //- name="" has to be rating because this is going to be sent over to our model, with rating in the review schema
+                    input(type="radio" required id=`star${num}` name="rating" value=num)
+                    label(for=`star${num}`) #{num} Stars
+                    //- If you want to be able to click a label and select the input that's associated with it, then you must make sure "for" and "id" are the same
+            input.button(type="submit" value="Submit Review")
