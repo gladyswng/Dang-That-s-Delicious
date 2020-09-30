@@ -38,17 +38,20 @@ const storeSchema = new mongoose.Schema({
     },
     photo: String,
     author: {
-        // We're telling it this is going to be an object. But when somebody gives us an OnjectId we'regoing to store just the object, and it's going to be referenced to the actual User. So we'll be able to come back and populate the author of our stores
+        // We're telling it this is going to be an object. But when somebody gives us an ObjectId we're going to store just the object, and it's going to be referenced to the actual User. So we'll be able to come back and populate the author of our stores
 
         type: mongoose.Schema.ObjectId, 
         // the objectId in database has its own type
         ref: 'User', // User model with 'User'
         required: 'You must supply an author'
     }
-}, {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-})
+    }, 
+    
+    {
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true }
+    }
+)
 
 // Define our indexes
 
@@ -68,7 +71,7 @@ storeSchema.pre('save', async function(next) {
     }
     this.slug = slug(this.name)
     // find other stores that have a slug of name, name-1, name-2
-    const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i')
+    const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i') // case (i)nsensitive
     const storesWithSlug = await this.constructor.find({ slug: slugRegEx })
     if(storesWithSlug.length) {
         this.slug = `${this.slug}-${storesWithSlug.length + 1}`

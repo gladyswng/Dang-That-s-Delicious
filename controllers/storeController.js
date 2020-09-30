@@ -121,7 +121,7 @@ exports.updateStore = async (req, res) => {
     // Set the location data to be a point
     req.body.location.type = 'Point'
 
-
+    // findOneAndUpdate takes in (query, data, options )
     const store = await Store.findOneAndUpdate({ _id: req.params.id }, req.body, {
         new: true, // return new store instad of old
         runValidators: true

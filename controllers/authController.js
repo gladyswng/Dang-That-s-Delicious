@@ -65,6 +65,9 @@ exports.forgot = async (req, res) => {
 
 
 exports.reset = async (req, res) => {
+  // TODO - confirm password backend
+
+
     const user = await User.findOne({
         resetPasswordToken: req.params.token,
         resetPasswordExpires: { $gt: Date.now() }
